@@ -1,310 +1,301 @@
-# Phase 1 Project Description
+PHASE1PROJECT
+**Business** **Understanding** 
 
-You've made it all the way through the first phase of this course - take a minute to celebrate your awesomeness!
+The movies dataset can be analyzed from a business perspective to gain insights into the financial performance of movies and the movie industry as a whole.
 
-![awesome](https://raw.githubusercontent.com/learn-co-curriculum/dsc-phase-1-project-v2-4/master/awesome.gif)
+1. One area of analysis is identifying which studios are most successful at the box office. By examining which studios have the highest total gross across all movies, studios can identify which competitors they need to focus on in terms of marketing and production strategies.
 
-Now you will put your new skills to use with a large end-of-Phase project!
+2. Another key area of analysis is understanding the relationship between domestic and foreign gross. Studios can use this information to make strategic decisions about where to allocate their marketing and distribution resources.
 
-In this project description, we will cover:
+3. The dataset can also be analyzed to identify trends in consumer preferences over time. By examining which types of movies perform well in different years, studios can make strategic decisions about which types of movies to produce and market in the future.
 
-* [***Project Overview:***](#project-overview) the project goal, audience, and dataset
-* [***Deliverables:***](#deliverables) the specific items you are required to produce for this project
-* [***Grading:***](#grading) how your project will be scored
-* [***Getting Started:***](#getting-started) guidance for how to begin your first project
+4. Finally, the dataset can be used to analyze the financial performance of individual movies. By examining the relationship between a movie's budget and its gross, studios can determine whether a particular movie was profitable or not. This analysis can inform decisions about how much to spend on future movie projects and where to allocate those funds.
 
-## Project Overview
+Overall, analyzing the movies dataset can provide valuable insights into the financial performance of movies and the movie industry as a whole, and help studios make data-driven decisions about their production, marketing, and distribution strategies.
 
-For this project, you will use exploratory data analysis to generate insights for a business stakeholder.
+**Data Understanding**
 
-### Business Problem
+#importing the necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt 
+%matplotlib inline
+import seaborn as sns
 
-Microsoft sees all the big companies creating original video content and they want to get in on the fun. They have decided to create a new movie studio, but they don’t know anything about creating movies. You are charged with exploring what types of films are currently doing the best at the box office. You must then translate those findings into actionable insights that the head of Microsoft's new movie studio can use to help decide what type of films to create.
+1.1 Loading the 'bom.movie_gross.csv' data as a dataframe in pandas
+df = pd.read_csv('bom.movie_gross.csv')
+df
 
-### The Data
+#displaying the first five rows of the dataset
+df.head()
 
-In the folder `zippedData` are movie datasets from:
+#displaying the last five rows of the dataset
+df.tail()
 
-* [Box Office Mojo](https://www.boxofficemojo.com/)
-* [IMDB](https://www.imdb.com/)
-* [Rotten Tomatoes](https://www.rottentomatoes.com/)
-* [TheMovieDB](https://www.themoviedb.org/)
-* [The Numbers](https://www.the-numbers.com/)
+From the above output, we can see that the dataset contains missing values 'NAN'
 
-Because it was collected from various locations, the different files have different formats. Some are compressed CSV (comma-separated values) or TSV (tab-separated values) files that can be opened using spreadsheet software or `pd.read_csv`, while the data from IMDB is located in a SQLite database.
+#getting a conscice summary of the data
+df.info()
 
-![movie data erd](https://raw.githubusercontent.com/learn-co-curriculum/dsc-phase-1-project-v2-4/master/movie_data_erd.jpeg)
+df.shape
+The dataframe contains 3387 rows and 5 columns
+#summary statistics of the data
+df.describe()
 
-Note that the above diagram shows ONLY the IMDB data. You will need to look carefully at the features to figure out how the IMDB data relates to the other provided data files.
+The data understanding of this movies dataset is that it contains information about the title, studio, domestic gross, foreign gross, and year for a set of movies. The data is relatively clean, but it contains missing values in the "foreign_gross" variable, and some movies have very low gross earnings. The data includes a mix of categorical and numerical variables.
 
-It is up to you to decide what data from this to use and how to use it. If you want to make this more challenging, you can scrape websites or make API calls to get additional data. If you are feeling overwhelmed or behind, we recommend you use only the following data files:
+1.2 Loading and prevewing the tn.movies_budgets.csv data as a dataframe using pandas
+df = pd.read_csv('tn.movie_budgets.csv')
+df
 
-* `im.db.zip`
-  * Zipped SQLite database (you will need to unzip then query using SQLite)
-  * `movie_basics` and `movie_ratings` tables are most relevant
-* `bom.movie_gross.csv.gz`
-  * Compressed CSV file (you can open without expanding the file using `pd.read_csv`)
+#displaying the first five rows of the dataset
+df.head()
 
-### Key Points
+#displaying the last five rows of the dataset
+df.tail()
 
-* **Your analysis should yield three concrete business recommendations.** The ultimate purpose of exploratory analysis is not just to learn about the data, but to help an organization perform better. Explicitly relate your findings to business needs by recommending actions that you think the business (Microsoft) should take.
+#getting a conscience summary of the data
+df.info()
 
-* **Communicating about your work well is extremely important.** Your ability to provide value to an organization - or to land a job there - is directly reliant on your ability to communicate with them about what you have done and why it is valuable. Create a storyline your audience (the head of Microsoft's new movie studio) can follow by walking them through the steps of your process, highlighting the most important points and skipping over the rest.
+df.shape
+the data contains 5782 rows and 6 columns
 
-* **Use plenty of visualizations.** Visualizations are invaluable for exploring your data and making your findings accessible to a non-technical audience. Spotlight visuals in your presentation, but only ones that relate directly to your recommendations. Simple visuals are usually best (e.g. bar charts and line graphs), and don't forget to format them well (e.g. labels, titles).
+#summary statistics of the data
+df.describe()
+The dataset has 5782 rows and 6 columns, with no missing values. The release dates are in a consistent format, and the production budget, domestic gross, and worldwide gross are in US dollars. However, the production budget, domestic gross, and worldwide gross are stored as strings with a "$" sign and commas, so they will need to be cleaned and converted to numerical data before analysis.
 
-## Deliverables
 
-There are three deliverables for this project:
+**Data Preparation**
+1. Check for and handle missing or null values if present.
 
-* A **non-technical presentation**
-* A **Jupyter Notebook**
-* A **GitHub repository**
+2. Check for and handle duplicates.
 
-### Non-Technical Presentation
+3. Convert data types: Convert the "domestic_gross", "foreign_gross", and "year" columns to their appropriate data types. For example, "domestic_gross" and "foreign_gross" should be converted to integers or floats, and "year" should be converted to a date format.
 
-The non-technical presentation is a slide deck presenting your analysis to business stakeholders.
+4. Check for and handle outliers.
 
-* ***Non-technical*** does not mean that you should avoid mentioning the technologies or techniques that you used, it means that you should explain any mentions of these technologies and avoid assuming that your audience is already familiar with them.
-* ***Business stakeholders*** means that the audience for your presentation is Microsoft, not the class or teacher. Do not assume that they are already familiar with the specific business problem, but also do not explain to them what Microsoft is.
+5. Handle categorical variables: If there are any categorical variables such as "studio" in the dataset, convert them to numerical values for analysis and modeling.
 
-The presentation describes the project ***goals, data, methods, and results***. It must include at least ***three visualizations*** which correspond to ***three business recommendations***.
+6. Create new columns from existing ones, such as calculating the total gross by adding the "domestic_gross" and "foreign_gross" columns.
 
-We recommend that you follow this structure, although the slide titles should be specific to your project:
+7. Convert the release_date column to datetime format in the 'tn.movie_budgets.csv' dataset.
+8. Remove the '$' sign and commas from the production_budget, domestic_gross, and worldwide_gross columns and convert them to numerical format in the 'tn.movie_budgets.csv' dataset.
+9. Create any new columns required for analysis, such as profit or ROI.
+10. 
+#Load the data
+df = pd.read_csv('bom.movie_gross.csv')
+df
 
-1. Beginning
-    * Overview
-    * Business Understanding
-2. Middle
-    * Data Understanding
-    * Data Analysis
-3. End
-    * Recommendations
-    * Next Steps
-    * Thank You
-       * This slide should include a prompt for questions as well as your contact information (name and LinkedIn profile)
+#checking for missing values
+df.isna()
 
-You will give a live presentation of your slides and submit them in PDF format on Canvas. The slides should also be present in the GitHub repository you submit with a file name of `presentation.pdf`.
+#total missing values
+df.isna().sum()
 
-The graded elements of the presentation are:
+#drop any rows with missing values
+df.dropna(inplace=True)
+df.isna().sum()
 
-* Presentation Content
-* Slide Style
-* Presentation Delivery and Answers to Questions
+#checking for duplicates
+df.duplicated().value_counts()
 
-See the [Grading](#grading) section for further explanation of these elements.
+# Remove any rows with zero domestic_gross or foreign_gross
+df = df[(df['domestic_gross'] != 0) & (df['foreign_gross'] != 0)]
 
-For further reading on creating professional presentations, check out:
+# Convert foreign_gross to float
+df['foreign_gross'] = df['foreign_gross'].str.replace('$', '').str.replace(',', '').astype(float)
 
-* [Presentation Content](https://github.com/learn-co-curriculum/dsc-project-presentation-content)
-* [Slide Style](https://github.com/learn-co-curriculum/dsc-project-slide-design)
+# Calculate the total_gross by adding domestic_gross and foreign_gross
+df['total_gross'] = df['domestic_gross'] + df['foreign_gross']
+cleaned_bom_dataset = df
+cleaned_bom_dataset
+
+
+
+
+
+#loading the tn.movie_budgets.csv data
+df = pd.read_csv('tn.movie_budgets.csv')
+df
+
+#checking for missing values
+df.isna().any()
 
-### Jupyter Notebook
+#checking for duplicates
+df.duplicated().value_counts()
 
-The Jupyter Notebook is a notebook that uses Python and Markdown to present your analysis to a data science audience.
+# Convert release_date column to datetime format
+df['release_date'] = pd.to_datetime(df['release_date'])
 
-* ***Python and Markdown*** means that you need to construct an integrated `.ipynb` file with Markdown (headings, paragraphs, links, lists, etc.) and Python code to create a well-organized, skim-able document.
-  * The notebook kernel should be restarted and all cells run before submission, to ensure that all code is runnable in order.
-  * Markdown should be used to frame the project with a clear introduction and conclusion, as well as introducing each of the required elements.
-* ***Data science audience*** means that you can assume basic data science proficiency in the person reading your notebook. This differs from the non-technical presentation.
+# Remove the '$' sign and commas from the budget and revenue columns
+df['production_budget'] = df['production_budget'].str.replace('$', '').str.replace(',', '').astype(float)
+df['domestic_gross'] = df['domestic_gross'].str.replace('$', '').str.replace(',', '').astype(float)
+df['worldwide_gross'] = df['worldwide_gross'].str.replace('$', '').str.replace(',', '').astype(float)
 
-Along with the presentation, the notebook also describes the project ***goals, data, methods, and results***. It must include at least ***three visualizations*** which correspond to ***three business recommendations***.
+# Check for and remove any outliers
+budget_q1 = df['production_budget'].quantile(0.25)
+budget_q3 = df['production_budget'].quantile(0.75)
+budget_iqr = budget_q3 - budget_q1
+df = df[(df['production_budget'] >= budget_q1 - 1.5 * budget_iqr) & (df['production_budget'] <= budget_q3 + 1.5 * budget_iqr)]
 
-You will submit the notebook in PDF format on Canvas as well as in `.ipynb` format in your GitHub repository.
+revenue_q1 = df['worldwide_gross'].quantile(0.25)
+revenue_q3 = df['worldwide_gross'].quantile(0.75)
+revenue_iqr = revenue_q3 - revenue_q1
+df = df[(df['worldwide_gross'] >= revenue_q1 - 1.5 * revenue_iqr) & (df['worldwide_gross'] <= revenue_q3 + 1.5 * revenue_iqr)]
 
-The graded elements for the Jupyter Notebook are:
+# Create new columns for profit and ROI
+df['profit'] = df['worldwide_gross'] - df['production_budget']
+df['ROI'] = (df['profit'] / df['production_budget']) * 100
 
-* Business Understanding
-* Data Understanding
-* Data Preparation
-* Data Analysis
-* Visualization
-* Code Quality
+# Remove any rows with zero domestic_gross or foreign_gross
+df = df[(df['domestic_gross'] != 0.0) & (df['worldwide_gross'] != 0.0)]
 
-See the [Grading](#grading) section for further explanation of these elements.
+# Reset the index
+df.reset_index(drop=True, inplace=True)
+df
 
-### GitHub Repository
+cleaned_tn_movie_dataset = df
+cleaned_tn_movie_dataset
+**Data Analysis** **And Visualization**
+#getting an overview of the cleaned dataset
+cleaned_bom_dataset.info()
 
-The GitHub repository is the cloud-hosted directory containing all of your project files as well as their version history.
+#getting some descriptive statistics about the numerical columns
+cleaned_bom_dataset.describe()
 
-This repository link will be the project link that you include on your resume, LinkedIn, etc. for prospective employers to view your work. Note that we typically recommend that 3 links are highlighted (out of 5 projects) so don't stress too much about getting this one to be perfect! There will also be time after graduation for cosmetic touch-ups.
+#Calculate the total gross for each studio
+studio_totals = cleaned_bom_dataset.groupby('studio')['total_gross'].sum().sort_values(ascending=False)
+studio_totals
 
-A professional GitHub repository has:
+# Calculate the average domestic gross for each year
+yearly_averages = cleaned_bom_dataset.groupby('year')['domestic_gross'].mean()
+yearly_averages
 
-1. `README.md`
-    * A file called `README.md` at the root of the repository directory, written in Markdown; this is what is rendered when someone visits the link to your repository in the browser
-    * This file contains these sections:
-       * Overview
-       * Business Understanding
-          * Include stakeholder and key business questions
-       * Data Understanding and Analysis
-          * Source of data
-          * Description of data
-          * Three visualizations (the same visualizations presented in the slides and notebook)
-       * Conclusion
-          * Summary of conclusions including three relevant findings
-2. Commit history
-   * Progression of updates throughout the project time period, not just immediately before the deadline
-   * Clear commit messages
-   * Commits from all team members (if a group project)
-3. Organization
-   * Clear folder structure
-   * Clear names of files and folders
-   * Easily-located notebook and presentation linked in the README
-4. Notebook(s)
-   * Clearly-indicated final notebook that runs without errors
-   * Exploratory/working notebooks (can contain errors, redundant code, etc.) from all team members (if a group project)
-5. `.gitignore`
-   * A file called `.gitignore` at the root of the repository directory instructs Git to ignore large, unnecessary, or private files
-     * Because it starts with a `.`, you will need to type `ls -a` in the terminal in order to see that it is there
-   * GitHub maintains a [Python .gitignore](https://github.com/github/gitignore/blob/master/Python.gitignore) that may be a useful starting point for your version of this file
-   * To tell Git to ignore more files, just add a new line to `.gitignore` for each new file name
-     * Consider adding `.DS_Store` if you are using a Mac computer, as well as project-specific file names
-     * If you are running into an error message because you forgot to add something to `.gitignore` and it is too large to be pushed to GitHub [this blog post](https://medium.com/analytics-vidhya/tutorial-removing-large-files-from-git-78dbf4cf83a?sk=c3763d466c7f2528008c3777192dfb95)(friend link) should help you address this
+# Plot a line chart of the average domestic gross for each year
+plt.plot(yearly_averages.index, yearly_averages.values)
+plt.title('Average Domestic Gross by Year')
+plt.xlabel('Year')
+plt.ylabel('Average Domestic Gross')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225433807-c1f7680b-0990-4fce-a660-ecbfd5cbdf02.png)
 
-You wil submit a link to the GitHub repository on Canvas.
+The line graph above shows increased average domestic gross over the years
 
-See the [Grading](#grading) section for further explanation of how the GitHub repository will be graded.
+# Create a scatter plot of domestic gross vs foreign gross
+plt.scatter(cleaned_bom_dataset['domestic_gross'], cleaned_bom_dataset['foreign_gross'])
+plt.title('Domestic Gross vs Foreign Gross')
+plt.xlabel('Domestic Gross')
+plt.ylabel('Foreign Gross')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225433712-005cf101-8a90-4ca4-8224-a1145059198e.png)
 
-For further reading on creating professional notebooks and `README`s, check out [this reading](https://github.com/learn-co-curriculum/dsc-repo-readability-v2-2).
+ This scatter plot shows the relationship between domestic gross and foreign gross for each movie, which can help to identify any trends or patterns in how movies perform in different markets.
+ 
+# Create a scatter plot of year vs total gross
+plt.scatter(cleaned_bom_dataset['year'], cleaned_bom_dataset['total_gross'])
+plt.title('Year vs Total Gross')
+plt.xlabel('Year')
+plt.ylabel('Total Gross')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225433581-674bada5-7a06-4982-b6b9-84280a201a04.png)
 
-## Grading
+This scatter plot shows the relationship between year and total gross for each movie, which can help to identify any trends or patterns in how the movie industry has performed over time. 
 
-***To pass this project, you must pass each project rubric objective.*** The project rubric objectives for Phase 1 are:
+# Create a bar chart of total gross revenue by year
+sns.set_style('whitegrid')
+plt.figure(figsize=(12, 6))
+sns.barplot(x='year', y='total_gross', data=cleaned_bom_dataset, palette='viridis')
+plt.title('Total Gross Revenue by Year')
+plt.ylabel('Total Gross Revenue')
+plt.xlabel('Year')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225433487-98375aff-42a7-4f5a-a83e-127b58033cae.png)
 
-1. Attention to Detail
-2. Data Communication
-3. Authoring Jupyter Notebooks
-4. Data Manipulation and Analysis with `pandas`
+#Calculate the correlation between domestic gross and foreign gross
+correlation = cleaned_bom_dataset['domestic_gross'].corr(cleaned_bom_dataset['foreign_gross'])
 
-### Attention to Detail
+# Print the correlation coefficient
+print(f"The correlation between domestic gross and foreign gross is {correlation:.2f}")
+A correlation of 0.77 indicates a strong positive relationship between domestic_gross and foreign_gross. This means that as one variable increases, the other variable tends to increase as well. However, it is important to note that correlation does not necessarily imply causation.
 
-If you have searched for a job, you have probably seen "attention to detail" appear on a job description. In a [survey of hiring managers](https://www.payscale.com/data-packages/job-skills), fully 56% of them said they felt that recent college grads lacked this skill. So, what does "attention to detail" mean, and how will you be graded on it at Flatiron School?
 
-Attention to detail means that you accomplish tasks thoroughly and accurately. You need to understand what is being asked of you, and double-check that your work fulfills all of the requirements. This will help make you a "no-brainer hire" because it helps employers feel confident that they will not have to double-check your work. For further reading, check out [this article](https://www.indeed.com/career-advice/career-development/attention-to-detail) from Indeed.
 
-***Attention to detail will be graded based on the project checklist. In Phase 1, you need to complete 60% (6 out of 10) or more of the checklist elements in order to pass the Attention to Detail objective.*** The standard for passing the Attention to Detail objective will increase with each Phase, until you are required to complete all elements to pass Phase 5 (Capstone).
+#Data analysis and Visualization on the cleaned_tn_movie_dataset
 
-The [Phase 1 Project Checklist](https://docs.google.com/document/d/1PjJwdek9EeIy9tYdvlC4bvKvwYcI2xHO1wEMENfqo5E/edit?usp=sharing) is linked here as well as directly in Canvas. The elements highlighted in yellow are the elements you need to complete in order to pass this objective. We recommend that you make your own copy of this document, so that you can check off each element as you complete it. The checklist also contains more specific, detailed guidance about the deliverables described above.
+#getting an overview of the cleaned dataset
+cleaned_tn_movie_dataset.info()
 
-Below are the definitions of each rubric level for this objective. This information is also summarized in the rubric, which is attached to the project submission assignment.
+#getting some descriptive statistics about the numerical columns
+cleaned_tn_movie_dataset.describe()
 
-#### Exceeds Objective
-70% or more of the project checklist items are complete
+From the output, we can see that the production budget, domestic gross, and worldwide gross columns have a wide range of values, with the minimum value being 0 and the maximum value being in the billions.
 
-#### Meets Objective (Passing Bar)
-60% of the project checklist items are complete
+# Correlation between columns
+print(cleaned_tn_movie_dataset.corr())
 
-#### Approaching Objective
-50% of the project checklist items are complete
+# Top 10 highest grossing movies
+top_grossing = cleaned_tn_movie_dataset.sort_values('worldwide_gross', ascending=False).head(10)
+print(top_grossing[['movie', 'worldwide_gross']])
 
-#### Does Not Meet Objective
-40% or fewer of the project checklist items are complete
+# Top 10 most profitable movies
+most_profitable = cleaned_tn_movie_dataset.sort_values('profit', ascending=False).head(10)
+print(most_profitable[['movie', 'profit']])
 
-### Data Communication
 
-Communication is another key "soft skill". In [the same survey mentioned above](https://www.payscale.com/data-packages/job-skills), 46% of hiring managers said that recent college grads were missing this skill.
+# Top 10 movies with highest ROI
+highest_ROI = cleaned_tn_movie_dataset.sort_values('ROI', ascending=False).head(10)
+print(highest_ROI[['movie', 'ROI']])
 
-Because "communication" can encompass such a wide range of contexts and skills, we will specifically focus our Phase 1 objective on Data Communication. We define Data Communication as:
+# Scatterplot of production budget vs worldwide gross
+sns.scatterplot(data=cleaned_tn_movie_dataset, x='production_budget', y='worldwide_gross')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225431887-e13c7c6a-3e8c-4bc9-ba9b-0378b0ab17f8.png)
 
-> Communicating basic data analysis results to diverse audiences via writing and live presentation
 
-To further define some of these terms:
+There is a positive correlation between the production budget and worldwide gross, indicating that spending more on production can lead to higher profits.
 
-* By "basic data analysis" we mean that you are filtering, sorting, grouping, and/or aggregating the data in order to answer business questions. This project does not involve inferential statistics or machine learning, although descriptive statistics such as measures of central tendency are encouraged.
-* By "results" we mean your ***three visualizations and recommendations***.
-* By "diverse audiences" we mean that your presentation and notebook are appropriately addressing a business and data science audience, respectively.
+# Scatterplot of domestic gross vs worldwide gross
+sns.scatterplot(data=cleaned_tn_movie_dataset, x='domestic_gross', y='worldwide_gross')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225432297-94dbcb96-16bb-4732-bb38-5dbb816bdffc.png)
 
-Below are the definitions of each rubric level for this objective. This information is also summarized in the rubric, which is attached to the project submission assignment.
 
-#### Exceeds Objective
-Creates and describes appropriate visualizations for given business questions, where each visualization fulfills all elements of the checklist
+There's a strong positive correlation between the domestic gross and the worldwide gross
+# Visualize the distribution of the production budget using a histogram
+plt.hist(cleaned_tn_movie_dataset['production_budget'], bins=30)
+plt.title('Distribution of Production Budget')
+plt.xlabel('Production Budget (in millions of dollars)')
+plt.ylabel('Frequency')
+plt.show()
+# Visualize the distribution of the production budget using a histogram
+plt.hist(cleaned_tn_movie_dataset['production_budget'], bins=30)
+plt.title('Distribution of Production Budget')
+plt.xlabel('Production Budget (in millions of dollars)')
+plt.ylabel('Frequency')
+plt.show()
+![image](https://user-images.githubusercontent.com/125399280/225432147-37b5747a-f928-4340-897f-4b63f77fb825.png)
 
-> This "checklist" refers to the Data Visualization checklist within the larger Phase 1 Project Checklist
 
-#### Meets Objective (Passing Bar)
-Creates and describes appropriate visualizations for given business questions
+**Business recommendations on the 'tn.movie_budgets.csv'**
+1. Focus on high ROI: Movies that have a high ROI (Return on Investment) are the most profitable, so it's recommended to focus on producing movies with higher ROI. In the given dataset, some movies have a very high ROI, such as My Date With Drew with a ROI of 16,358.27%.
 
-> This objective can be met even if all checklist elements are not fulfilled. For example, if there is some illegible text in one of your visualizations, you can still meet this objective
+2. Consider worldwide gross: While domestic gross is important, it is equally important to consider the worldwide gross for a movie. A movie that performs well internationally can significantly increase its overall revenue. 
 
-#### Approaching Objective
-Creates visualizations that are not related to the business questions, or uses an inappropriate type of visualization
+3. Control production budget: The dataset shows that movies with high production budgets don't necessarily guarantee high returns. Movies like Cutthroat Island and The Alamo had high production budgets but failed to perform well at the box office. It's essential to control production budgets and focus on producing quality content that resonates with the target audience.
 
-> Even if you create very compelling visualizations, you cannot pass this objective if the visualizations are not related to the business questions
+**Business recommendations on the bom.movie_gross.csv**
+1. Focus on high-grossing movies: The dataset shows that movies that grossed over $500 million worldwide were released by well-established studios like BV (Buena Vista) and WB (Warner Bros). Therefore, it would be wise for studios to focus on producing high-grossing movies that can generate significant revenue for the company.
 
-> An example of an inappropriate type of visualization would be using a line graph to show the correlation between two independent variables, when a scatter plot would be more appropriate
+2.  Expand overseas: The foreign gross revenue for the movies in the dataset was higher than the domestic gross revenue, indicating that it is essential for studios to expand their business overseas to increase their revenue. Studios should aim to distribute their movies in different countries and work with local distributors to increase their global reach.
 
-#### Does Not Meet Objective
-Does not submit the required number of visualizations
+3. Create franchise movies: Franchise movies like Harry Potter and Toy Story were some of the highest-grossing movies in the dataset. Therefore, studios should consider investing in creating movie franchises that can generate revenue from sequels, spin-offs, merchandise, and theme parks.
 
-### Authoring Jupyter Notebooks
+4. Focus on quality: The success of movies like Inception and Toy Story 3 shows that the quality of the movie matters. Studios should focus on producing quality content that can attract audiences and generate positive reviews, leading to more significant box office revenue.
 
-According to [Kaggle's 2020 State of Data Science and Machine Learning Survey](https://www.kaggle.com/kaggle-survey-2020), 74.1% of data scientists use a Jupyter development environment, which is more than twice the percentage of the next-most-popular IDE, Visual Studio Code. Jupyter Notebooks allow for reproducible, skim-able code documents for a data science audience. Comfort and skill with authoring Jupyter Notebooks will prepare you for job interviews, take-home challenges, and on-the-job tasks as a data scientist.
 
-The key feature that distinguishes *authoring Jupyter Notebooks* from simply *writing Python code* is the fact that Markdown cells are integrated into the notebook along with the Python cells in a notebook. You have seen examples of this throughout the curriculum, but now it's time for you to practice this yourself!
 
-Below are the definitions of each rubric level for this objective. This information is also summarized in the rubric, which is attached to the project submission assignment.
 
-#### Exceeds Objective
-Uses Markdown and code comments to create a well-organized, skim-able document that follows all best practices
 
-> Refer to the [repository readability reading](https://github.com/learn-co-curriculum/dsc-repo-readability-v2-2) for more tips on best practices
 
-#### Meets Objective (Passing Bar)
-Uses some Markdown to create an organized notebook, with an introduction at the top and a conclusion at the bottom
 
-#### Approaching Objective
-Uses Markdown cells to organize, but either uses only headers and does not provide any explanations or justifications, or uses only plaintext without any headers to segment out sections of the notebook
 
-> Headers in Markdown are delineated with one or more `#`s at the start of the line. You should have a mixture of headers and plaintext (text where the line does not start with `#`)
-
-#### Does Not Meet Objective
-Does not submit a notebook, or does not use Markdown cells at all to organize the notebook
-
-### Data Manipulation and Analysis with `pandas`
-
-`pandas` is a very popular data manipulation library, with over 2 million downloads on Anaconda (`conda install pandas`) and over 19 million downloads on PyPI (`pip install pandas`) at the time of this writing. In our own internal data, we see that the overwhelming majority of Flatiron School DS grads use `pandas` on the job in some capacity.
-
-Unlike in base Python, where the Zen of Python says "There should be one-- and preferably only one --obvious way to do it", there is often more than one valid way to do something in `pandas`. However there are still more efficient and less efficient ways to use it. Specifically, the best `pandas` code is *performant* and *idiomatic*.
-
-Performant `pandas` code utilizes methods and broadcasting rather than user-defined functions or `for` loops. For example, if you need to strip whitespace from a column containing string data, the best approach would be to use the [`pandas.Series.str.strip` method](https://pandas.pydata.org/docs/reference/api/pandas.Series.str.strip.html) rather than writing your own function or writing a loop. Or if you want to multiply everything in a column by 100, the best approach would be to use broadcasting (e.g. `df["column_name"] * 100`) instead of a function or loop. You can still write your own functions if needed, but only after checking that there isn't a built-in way to do it.
-
-Idiomatic `pandas` code has variable names that are meaningful words or abbreviations in English, that are related to the purpose of the variables. You can still use `df` as the name of your DataFrame if there is only one main DataFrame you are working with, but as soon as you are merging multiple DataFrames or taking a subset of a DataFrame, you should use meaningful names. For example, `df2` would not be an idiomatic name, but `movies_and_reviews` could be.
-
-We also recommend that you rename all DataFrame columns so that their meanings are more understandable, although it is fine to have acronyms. For example, `"col1"` would not be an idiomatic name, but `"USD"` could be.
-
-Below are the definitions of each rubric level for this objective. This information is also summarized in the rubric, which is attached to the project submission assignment.
-
-#### Exceeds Objective
-Uses `pandas` to prepare data and answer business questions in an idiomatic, performant way
-
-#### Meets Objective (Passing Bar)
-Successfully uses `pandas` to prepare data in order to answer business questions
-
-> This includes projects that _occasionally_ use base Python when `pandas` methods would be more appropriate (such as using `enumerate()` on a DataFrame), or occasionally performs operations that do not appear to have any relevance to the business questions
-
-#### Approaching Objective
-Uses `pandas` to prepare data, but makes significant errors
-
-> Examples of significant errors include: the result presented does not actually answer the stated question, the code produces errors, the code _consistently_ uses base Python when `pandas` methods would be more appropriate, or the submitted notebook contains significant quantities of code that is unrelated to the presented analysis (such as copy/pasted code from the curriculum or StackOverflow)
-
-#### Does Not Meet Objective
-Unable to prepare data using `pandas`
-
-> This includes projects that successfully answer the business questions, but do not use `pandas` (e.g. use only base Python, or use some other tool like R, Tableau, or Excel)
-
-## Getting Started
-
-Please start by reviewing the contents of this project description. If you have any questions, please ask your instructor ASAP.
-
-Next, you will need to complete the [***Project Proposal***](#project_proposal) which must be reviewed by your instructor before you can continue with the project.
-
-Then, you will need to create a GitHub repository. There are three options:
-
-1. Look at the [Phase 1 Project Templates and Examples repo](https://github.com/learn-co-curriculum/dsc-project-template) and follow the directions in the MVP branch.
-2. Fork the [Phase 1 Project Repository](https://github.com/learn-co-curriculum/dsc-phase-1-project-v2-4), clone it locally, and work in the `student.ipynb` file. Make sure to also add and commit a PDF of your presentation to your repository with a file name of `presentation.pdf`.
-3. Create a new repository from scratch by going to [github.com/new](https://github.com/new) and copying the data files from one of the above resources into your new repository. This approach will result in the most professional-looking portfolio repository, but can be more complicated to use. So if you are getting stuck with this option, try one of the above options instead.
-
-## Summary
-
-This project will give you a valuable opportunity to develop your data science skills using real-world data. The end-of-phase projects are a critical part of the program because they give you a chance to bring together all the skills you've learned, apply them to realistic projects for a business stakeholder, practice communication skills, and get feedback to help you improve. You've got this!
