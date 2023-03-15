@@ -1,4 +1,5 @@
 PHASE1PROJECT
+
 **Business** **Understanding** 
 
 The movies dataset can be analyzed from a business perspective to gain insights into the financial performance of movies and the movie industry as a whole.
@@ -16,52 +17,73 @@ Overall, analyzing the movies dataset can provide valuable insights into the fin
 **Data Understanding**
 
 #importing the necessary libraries
+
 import pandas as pd
+
 import numpy as np
+
 import matplotlib.pyplot as plt 
+
 %matplotlib inline
+
 import seaborn as sns
 
 1.1 Loading the 'bom.movie_gross.csv' data as a dataframe in pandas
+
 df = pd.read_csv('bom.movie_gross.csv')
+
 df
 
 #displaying the first five rows of the dataset
+
 df.head()
 
 #displaying the last five rows of the dataset
+
 df.tail()
 
 From the above output, we can see that the dataset contains missing values 'NAN'
 
 #getting a conscice summary of the data
+
 df.info()
 
 df.shape
+
 The dataframe contains 3387 rows and 5 columns
+
 #summary statistics of the data
+
 df.describe()
 
 The data understanding of this movies dataset is that it contains information about the title, studio, domestic gross, foreign gross, and year for a set of movies. The data is relatively clean, but it contains missing values in the "foreign_gross" variable, and some movies have very low gross earnings. The data includes a mix of categorical and numerical variables.
 
 1.2 Loading and prevewing the tn.movies_budgets.csv data as a dataframe using pandas
+
 df = pd.read_csv('tn.movie_budgets.csv')
+
 df
 
 #displaying the first five rows of the dataset
+
 df.head()
 
 #displaying the last five rows of the dataset
+
 df.tail()
 
 #getting a conscience summary of the data
+
 df.info()
 
 df.shape
+
 the data contains 5782 rows and 6 columns
 
 #summary statistics of the data
+
 df.describe()
+
 The dataset has 5782 rows and 6 columns, with no missing values. The release dates are in a consistent format, and the production budget, domestic gross, and worldwide gross are in US dollars. However, the production budget, domestic gross, and worldwide gross are stored as strings with a "$" sign and commas, so they will need to be cleaned and converted to numerical data before analysis.
 
 
@@ -83,20 +105,25 @@ The dataset has 5782 rows and 6 columns, with no missing values. The release dat
 9. Create any new columns required for analysis, such as profit or ROI.
 10. 
 #Load the data
+
 df = pd.read_csv('bom.movie_gross.csv')
 df
 
 #checking for missing values
+
 df.isna()
 
 #total missing values
+
 df.isna().sum()
 
 #drop any rows with missing values
+
 df.dropna(inplace=True)
 df.isna().sum()
 
 #checking for duplicates
+
 df.duplicated().value_counts()
 
 # Remove any rows with zero domestic_gross or foreign_gross
